@@ -21,12 +21,15 @@ const checkCarPayload = (req, res, next) => {
   const make = req.body.make;
   const model = req.body.model;
   const mileage = req.body.mileage;
-  console.log(req.body);
 
-  if (!vin || !make || !model || !mileage) {
-    return res
-      .status(400)
-      .json({ message: "vin, make, model or mileage is missing" });
+  if (!vin) {
+    return res.status(400).json({ message: "vin is missing" });
+  } else if (!make) {
+    return res.status(400).json({ message: "make is missing" });
+  } else if (!model) {
+    return res.status(400).json({ message: "model is missing" });
+  } else if (!mileage) {
+    return res.status(400).json({ message: "mileage is missing" });
   }
   next();
 };
@@ -48,6 +51,7 @@ const checkVinNumberUnique = async (req, res, next) => {
         res.status(400).json({ message: `vin ${req.body.vin} already exists` });
       }
     });
+    next();
   } catch (err) {
     next(err);
   }
